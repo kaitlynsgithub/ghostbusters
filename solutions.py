@@ -40,8 +40,20 @@ def normalize(self):
     >>> empty
     {}
     """
-    "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    # Used for normalizing
+    totalValue = self.total()
+
+    # Items are not empty 
+    if not(self.items()): 
+        for key, val in self.items():
+            if val == 0: 
+                # Cannot be normalized, so return 
+                self[key] = 0.0
+            elif val != 0: 
+                # Normalize 
+                self[key] = val/totalValue
+
+    raiseNotDefined() #TAKE THIS OUT?? 
 
 def sample(self):
     """
@@ -53,7 +65,7 @@ def sample(self):
     >>> dist['b'] = 2
     >>> dist['c'] = 2
     >>> dist['d'] = 0
-    >>> N = 100000.0
+    >>> N = 100 000.0
     >>> samples = [dist.sample() for _ in range(int(N))]
     >>> round(samples.count('a') * 1.0/N, 1)  # proportion of 'a'
     0.2
@@ -64,8 +76,32 @@ def sample(self):
     >>> round(samples.count('d') * 1.0/N, 1)
     0.0
     """
-    "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    # List to choose return value from
+    samples = []
+
+    # Used for denormalizing
+    totalValue = self.total()
+
+    # Check if each item is denormalized
+    for item, weight in self.items():
+        if weight >= 1: 
+
+            for i in range(weight):
+                # Append if denormalized
+                samples.append(item)
+        elif 0 < weight < 1: 
+            # Denormalize if already normalized
+            denorm = weight * totalValue
+    
+            for j in range(denorm): 
+                # Append when denormalized
+                samples.append(item)
+
+    # Choose a random sample
+    
+
+
+    raiseNotDefined() #TAKE THIS OUT?? 
 
 
 def getObservationProb(self, noisyDistance, pacmanPosition, ghostPosition, jailPosition):
