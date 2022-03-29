@@ -14,7 +14,7 @@
 '''Implement the methods from the classes in inference.py here'''
 
 import util
-from util import raiseNotDefined
+from util import manhattanDistance, raiseNotDefined
 import random
 import busters
 
@@ -73,7 +73,23 @@ def getObservationProb(self, noisyDistance, pacmanPosition, ghostPosition, jailP
     Return the probability P(noisyDistance | pacmanPosition, ghostPosition).
     """
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    # handling the special case
+    if ghostPosition == jailPosition:
+        # if the ghost is captured in the jail position, then the observation is None with probability 1
+        if noisyDistance is None:
+            return 1
+        # is distance reading is not None, ghost in jail with probability 0
+        else:
+            return 0
+    else: # if the ghost is running free on the map
+        if noisyDistance is None: 
+            # if no noise is being detected from the ghost, there is 0 probability of bumping into Pacman
+            return 0
+        else:
+            # else we calculate the actual distance between Pacman and the ghost then return value
+            pacman_to_ghost = manhattanDistance(pacmanPosition, ghostPosition)
+            return busters.getObservationProbability(noisyDistance, pacman_to_ghost)
+        
 
 
 
