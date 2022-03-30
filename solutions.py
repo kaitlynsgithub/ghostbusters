@@ -124,11 +124,9 @@ def getObservationProb(self, noisyDistance, pacmanPosition, ghostPosition, jailP
         else:
             # else we calculate the actual distance between Pacman and the ghost then return value
             pacman_to_ghost = manhattanDistance(pacmanPosition, ghostPosition)
-            return busters.getObservationProbability(noisyDistance, pacman_to_ghost)
+            noisy_is_true =  busters.getObservationProbability(noisyDistance, pacman_to_ghost)
+            return noisy_is_true
         
-
-
-
 def observeUpdate(self, observation, gameState):
     """
     Update beliefs based on the distance observation and Pacman's position.
@@ -158,5 +156,19 @@ def elapseTime(self, gameState):
     Pacman's current position. However, this is not a problem, as Pacman's
     current position is known.
     """
-    "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    pos_dict = {}
+
+    for pos in self.allPositions:
+        pos_dict[pos] = 0
+
+    for oldPos in self.allPositions:
+        # for each old position p, the new position ditribution is the probablity
+        # that the ghost is at position p at time t + 1, given ghost at oldPos at time t
+        newPosDist = self.getPositionDistribution(gameState, oldPos)
+
+        # updating all position
+        for pos in self.allPositions:
+            pos_dict[pos] = pos_dict[pos] + newPosDist[pos] * self.beliefs[oldPos]
+
+    for key in self.allPositions:
+        self.beliefs[key] = pos_dict[key]
