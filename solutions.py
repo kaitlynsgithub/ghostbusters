@@ -140,9 +140,22 @@ def observeUpdate(self, observation, gameState):
     current position. However, this is not a problem, as Pacman's current
     position is known.
     """
-    "*** YOUR CODE HERE ***"
-    raiseNotDefined()
-    self.beliefs.normalize()
+    #Get pacman position
+    pman_pos = gameState.getPacmanPosition()
+
+    #Get jail position
+    jail_pos = self.getJailPosition()
+
+    #Getting distribution
+    dist = inference.DiscreteDistribution()
+
+    for i in range(0, len(self.allPositions)):
+        pos = self.allPositions[i]
+        probability = self.getObservationProb(observation, pman_pos, pos, jail_pos)
+        dist[pos] = self.beliefs[pos] * probability
+       
+    dist.normalize()
+    self.beliefs = dist
 
 
 def elapseTime(self, gameState):
