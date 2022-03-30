@@ -156,6 +156,8 @@ def elapseTime(self, gameState):
     Pacman's current position. However, this is not a problem, as Pacman's
     current position is known.
     """
+    # dictionary of all pos to update the belief at every position after
+    # one time step elapsing
     pos_dict = {}
 
     for pos in self.allPositions:
@@ -170,5 +172,6 @@ def elapseTime(self, gameState):
         for pos in self.allPositions:
             pos_dict[pos] = pos_dict[pos] + newPosDist[pos] * self.beliefs[oldPos]
 
-    for key in self.allPositions:
-        self.beliefs[key] = pos_dict[key]
+    # update the Discrete Distribution to what the updated positions looks like
+    for pos in self.allPositions:
+        self.beliefs[pos] = pos_dict[pos]
