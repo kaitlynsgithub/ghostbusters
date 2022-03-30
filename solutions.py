@@ -53,7 +53,6 @@ def normalize(self):
                 # Normalize 
                 self[key] = val/totalValue
 
-    raiseNotDefined() #TAKE THIS OUT?? 
 
 def sample(self):
     """
@@ -98,10 +97,9 @@ def sample(self):
                 samples.append(item)
 
     # Choose a random sample
-    
+    rand = random.randint(0, len(samples)-1)
 
-
-    raiseNotDefined() #TAKE THIS OUT?? 
+    return samples[rand]
 
 
 def getObservationProb(self, noisyDistance, pacmanPosition, ghostPosition, jailPosition):
